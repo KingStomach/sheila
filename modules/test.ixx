@@ -6,28 +6,25 @@ namespace sheila {
 class NOVTABLE ITest {
 public:
   constexpr ITest(const char* name, const char* tags);
-  constexpr virtual ~ITest() noexcept;
+  SHEILA_API constexpr virtual ~ITest() noexcept;
 
-  constexpr virtual void set_up();
-  constexpr virtual void tear_down();
-  constexpr virtual void pre_case();
-  constexpr virtual void post_case();
+  SHEILA_API constexpr virtual void set_up();
+  SHEILA_API constexpr virtual void tear_down();
 
   void execute();
 
 private:
-  virtual void execute_impl() = 0;
+  virtual void test_body() = 0;
   std::string_view name_;
 };
 
-class Test : public ITest {
+export class Test : public ITest {
 public:
-  constexpr Test(const char* name, const char* tags,
-                 void (*func)(void)) noexcept;
-
+  SHEILA_API constexpr Test(const char* name, const char* tags,
+    void (*func)(Test&));
 private:
-  void execute_impl() override;
+  SHEILA_API void test_body() override final;
 
-  void (*func_)(void);
+  void (*func_)(Test&);
 };
 }  // namespace sheila

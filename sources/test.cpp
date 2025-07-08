@@ -12,26 +12,16 @@ constexpr void ITest::set_up() {
 constexpr void ITest::tear_down() {
 }
 
-constexpr void ITest::pre_case() {
-}
-
-constexpr void ITest::post_case() {
-}
-
 void ITest::execute() {
   set_up();
-  execute_impl();
+  test_body();
   tear_down();
 }
 
 constexpr Test::Test(const char* name, const char* tags,
-                     void (*func)(void)) noexcept
-    : ITest(name, tags), func_(func) {
-}
+  void (*func)(Test&)): ITest(name, tags), func_(func) {}
 
-void Test::execute_impl() {
-  pre_case();
-  func_();
-  post_case();
+void Test::test_body() {
+  func_(*this);
 }
 }  // namespace sheila

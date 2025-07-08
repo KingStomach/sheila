@@ -6,7 +6,7 @@ import :factory;
 import :test;
 
 namespace sheila {
-Register::Register(const char* name, const char* tags, void (*func_)(void)) {
-  Factory::instance().add_test(std::make_unique<Test>(name, tags, func_));
+Register::Register(ITest* test) {
+  Factory::instance().add_test(std::unique_ptr<ITest>(test));
 }
 }  // namespace sheila

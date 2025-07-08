@@ -27,7 +27,7 @@ string(TOUPPER ${PROJECT_NAME} UPPER_PROJECT_NAME)
 target_compile_definitions(${PROJECT_NAME} PRIVATE ${UPPER_PROJECT_NAME}_BUILD)
 
 if(MSVC)
-  target_compile_options(${PROJECT_NAME} PRIVATE /Zc:preprocessor)
+  target_compile_options(${PROJECT_NAME} PUBLIC /Zc:preprocessor)
 endif()
 
 set_target_properties(${PROJECT_NAME} PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/${OUTPUT_DIRECTORY})
