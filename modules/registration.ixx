@@ -1,22 +1,15 @@
 export module sheila:registration;
 
-import <utility>;
+import <memory>;
+import <source_location>;
 
 import :test;
 
 namespace sheila {
 export class SHEILA_API Register {
 public:
-  Register(ITest* test);
+  Register(std::unique_ptr<ITest> (*func)(),
+           const std::source_location& loc =
+               std::source_location::current()) noexcept;
 };
-
-export template <class T, class... Args> requires(std::is_base_of_v<ITest, T>)
-ITest* make_test(Args&&... args) noexcept {
-  try {
-    return new T(std::forward<Args>(args)...);
-  }
-  catch (...) {
-    return nullptr;
-  }
-}
 }  // namespace sheila

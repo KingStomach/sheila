@@ -4,8 +4,6 @@ namespace sheila {
 constexpr ITest::ITest(const char* name, const char* tags) : name_(name) {
 }
 
-constexpr ITest::~ITest() noexcept = default;
-
 constexpr void ITest::set_up() {
 }
 
@@ -18,8 +16,9 @@ void ITest::execute() {
   tear_down();
 }
 
-constexpr Test::Test(const char* name, const char* tags,
-  void (*func)(Test&)): ITest(name, tags), func_(func) {}
+constexpr Test::Test(const char* name, const char* tags, void (*func)(Test&))
+    : ITest(name, tags), func_(func) {
+}
 
 void Test::test_body() {
   func_(*this);
