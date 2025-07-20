@@ -1,0 +1,34 @@
+{
+  "version": 8,
+  "cmakeMinimumRequired": {
+    "major": 3,
+    "minor": 28,
+    "patch": 0
+  },
+  "configurePresets": [
+    {
+      "name": "Visual Studio 17 2022",
+      "displayName": "Visual Studio 17 2022",
+      "description": "Visual Studio 17 2022 for the project",
+      "generator": "Visual Studio 17 2022",
+      "binaryDir": "${sourceDir}/build",
+      "cacheVariables": {
+        "CXX_COMPILER_OPTIONS": "/W4;/WX;/Zc:preprocessor;",
+        "ENABLE_TEST_PROJECTS": "sheila",
+        "CMAKE_RUNTIME_OUTPUT_DIRECTORY": "${sourceDir}/out"
+      }
+    }
+  ],
+  "buildPresets": [
+    {
+      "name": "Debug",
+      "configurePreset": "Visual Studio 17 2022",
+      "configuration": "Debug"
+    },
+    {
+      "name": "Release",
+      "configurePreset": "Visual Studio 17 2022",
+      "configuration": "Release"
+    }
+  ]
+}

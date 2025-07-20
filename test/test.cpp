@@ -1,16 +1,16 @@
+#include <sheila.h>
 import sheila;
-import <vector>;
 
 TEST("TEST", "") {
 }
 
-class MyTest_F : public sheila::Test {
+class MyTest_F : public sheila::TestFixture {
 public:
-  using sheila::Test::Test;
+  using sheila::TestFixture::TestFixture;
 
-  void set_up() override {
+  void set_up() noexcept override {
   }
-  void tear_down() override {
+  void tear_down() noexcept override {
   }
 };
 
@@ -21,12 +21,17 @@ class MyTest_P : public sheila::ParameterTest<int> {
 public:
   using sheila::ParameterTest<int>::ParameterTest;
 
-  void pre_case(int&) override {
+  void set_up() noexcept override {
+  }
+  void tear_down() noexcept override {
   }
 
-  void post_case(int&) override {
+  void pre_case(int&) noexcept override {
+  }
+
+  void post_case(int&) noexcept override {
   }
 };
 
-TEST_P(MyTest_P, "TEST_P", "", sheila::values<int>({1, 2, 3})) {
+TEST_P(MyTest_P, "TEST_P", "", sheila::value<int>({1, 2, 3})) {
 }

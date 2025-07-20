@@ -8,34 +8,45 @@
 
 #define UNIQUE_NAME(name) STRING_CAT(name##_, __LINE__)
 
-#define TEST_REGISTER(class, ...)                    \
-  static sheila::Register UNIQUE_NAME(register_)(    \
-      [] -> std::unique_ptr<sheila::ITest> {         \
-        return std::make_unique<class>(__VA_ARGS__); \
-      })
+#define TEST_REGISTER(func, ...)                  \
+  static sheila::Register UNIQUE_NAME(register_)( \
+      [] static { return func(__VA_ARGS__); })
 
-#define DECLARE_TEST_FUNCTION(pre, name, ...) pre static void name(__VA_ARGS__)
+#define DECLARE_TEST_FUNCTION(pre, name, ...)                                 \
+  _Pragma("warning(push)") _Pragma("warning(disable : 4100)") pre static void \
+  name(__VA_ARGS__) _Pragma("warning(pop)")
 
-#define DECLARE_FUNCTION_TEST(class, name, tags, func)            \
-  DECLARE_TEST_FUNCTION(, func, class&);                          \
-  TEST_REGISTER(class, name, tags,                                \
-                reinterpret_cast<void (*)(sheila::Test&)>(func)); \
+#define TEST_IMPL(name, tags, func)                   \
+  DECLARE_TEST_FUNCTION(, func);                      \
+  TEST_REGISTER(sheila::make_test, name, tags, func); \
+  DECLARE_TEST_FUNCTION(, func)
+
+#define TEST(name, tags) TEST_IMPL(name, tags, UNIQUE_NAME(test))
+
+#define TEST_F_IMPL(class, name, tags, func)                         \
+  DECLARE_TEST_FUNCTION(, func, class&);                             \
+  TEST_REGISTER(sheila::make_test_fixture<class>, name, tags, func); \
   DECLARE_TEST_FUNCTION(, func, class& test)
 
-#define TEST(name, tags) \
-  DECLARE_FUNCTION_TEST(sheila::Test, name, tags, UNIQUE_NAME(test))
 #define TEST_F(class, name, tags) \
-  DECLARE_FUNCTION_TEST(class, name, tags, UNIQUE_NAME(test))
+  TEST_F_IMPL(class, name, tags, UNIQUE_NAME(test))
 
-#define DECLARE_PARAMETER_TEST(class, name, tags, func, parameter)          \
-  DECLARE_TEST_FUNCTION(, func, class&, typename class ::value_type&);      \
-  TEST_REGISTER(class, name, tags, sheila::rtti::make_generator(parameter), \
-                reinterpret_cast<void (*)(                                  \
-                    sheila::ParameterTest<typename class ::value_type>&,    \
-                    typename class ::value_type&)>(func));                  \
+#define TEST_P_IMPL(class, name, tags, func, parameter)                    \
+  DECLARE_TEST_FUNCTION(, func, class&, typename class ::value_type&);     \
+  TEST_REGISTER((sheila::make_parameter_test<class, decltype(parameter)>), \
+                name, tags, parameter, func);                              \
   DECLARE_TEST_FUNCTION(, func, class& test, typename class ::value_type& val)
 
+//
+// #define DECLARE_PARAMETER_TEST(class, name, tags, func, parameter)          \
+//  DECLARE_TEST_FUNCTION(, func, class&, typename class ::value_type&);      \
+//  TEST_REGISTER(class, name, tags, sheila::rtti::make_generator(parameter), \
+//                reinterpret_cast<void (*)(                                  \
+//                    sheila::ParameterTest<typename class ::value_type>&,    \
+//                    typename class ::value_type&)>(func));                  \
+//  DECLARE_TEST_FUNCTION(, func, class& test, typename class ::value_type& val)
+//
 #define TEST_P(class, name, tags, parameters) \
-  DECLARE_PARAMETER_TEST(class, name, tags, UNIQUE_NAME(test), parameters)
+  TEST_P_IMPL(class, name, tags, UNIQUE_NAME(test), parameters)
 
 #endif  // SHEILA_H

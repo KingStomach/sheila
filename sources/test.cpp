@@ -1,13 +1,8 @@
 module sheila;
 
 namespace sheila {
-constexpr ITest::ITest(const char* name, const char* tags) : name_(name) {
-}
-
-constexpr void ITest::set_up() {
-}
-
-constexpr void ITest::tear_down() {
+// ITest
+ITest::ITest(const char* name, const char*) : name_(name) {
 }
 
 void ITest::execute() {
@@ -16,11 +11,23 @@ void ITest::execute() {
   tear_down();
 }
 
-constexpr Test::Test(const char* name, const char* tags, void (*func)(Test&))
+// Test
+Test::Test(const char* name, const char* tags, void (*func)())
     : ITest(name, tags), func_(func) {
 }
 
 void Test::test_body() {
+  func_();
+}
+
+// TestFixture
+TestFixture::TestFixture(const char* name, const char* tags,
+                         void (*func)(TestFixture&))
+    : ITest(name, tags), func_(func) {
+}
+
+void TestFixture::test_body() {
   func_(*this);
 }
+
 }  // namespace sheila

@@ -1,7 +1,8 @@
+module;
+#include "global.h"
 export module sheila:factory;
 
-import <memory>;
-import <vector>;
+import std;
 
 import :test;
 
@@ -16,4 +17,8 @@ public:
 private:
   std::vector<std::unique_ptr<ITest>> tests_;
 };
+
+export SHEILA_API [[nodiscard]] int run_all_test(int argc,
+                                                 char* argv[]) noexcept;
+
 }  // namespace sheila

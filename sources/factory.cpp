@@ -10,7 +10,7 @@ void Factory::add_test(std::unique_ptr<ITest>&& test) {
   tests_.emplace_back(std::move(test));
 }
 
-void Factory::run_all(int argc, char* argv[]) noexcept {
+void Factory::run_all(int, char*[]) noexcept {
   for (auto&& test : tests_) {
     test->execute();
   }

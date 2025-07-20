@@ -8,6 +8,8 @@ file(GLOB MODULES "*.ixx")
 source_group(source FILES ${SOURCES})
 source_group(module FILES ${MODULES})
 
+set(EXECUTABLE_OUTPUT_PATH ${CMAKE_RUNTIME_OUTPUT_DIRECTORY})
+
 add_executable(${PROJECT_NAME})
 
 target_sources(
@@ -20,7 +22,5 @@ target_link_libraries(${PROJECT_NAME} PRIVATE sheila)
 
 string(TOUPPER ${PROJECT_NAME} UPPER_PROJECT_NAME)
 target_compile_definitions(${PROJECT_NAME} PRIVATE ${UPPER_PROJECT_NAME}_BUILD)
-
-set_target_properties(${PROJECT_NAME} PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/${OUTPUT_DIRECTORY})
 
 set_property(DIRECTORY ${CMAKE_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT ${PROJECT_NAME})
