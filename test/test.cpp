@@ -4,34 +4,51 @@ import sheila;
 TEST("TEST", "") {
 }
 
-class MyTest_F : public sheila::TestFixture {
+namespace {
+class Fixture {
 public:
-  using sheila::TestFixture::TestFixture;
-
-  void set_up() noexcept override {
+  void set_up() noexcept {
   }
-  void tear_down() noexcept override {
+
+  void tear_down() noexcept {
   }
 };
+}  // namespace
 
-TEST_F(MyTest_F, "TEST_F", "") {
+TEST_F(Fixture, "TEST_F", "") {
 }
 
-class MyTest_P : public sheila::ParameterTest<int> {
+namespace {
+using MyParameterFixture = sheila::DefaultParameterFixture<int>;
+}
+
+TEST_P(MyParameterFixture, "TEST_P", "", sheila::values({1, 2, 3})) {
+}
+
+namespace {
+class ParameterFixture {
 public:
-  using sheila::ParameterTest<int>::ParameterTest;
+  using value_type = int;
 
-  void set_up() noexcept override {
+  void set_up() noexcept {
   }
-  void tear_down() noexcept override {
-  }
-
-  void pre_case(int&) noexcept override {
+  void tear_down() noexcept {
   }
 
-  void post_case(int&) noexcept override {
+  void pre_case(const int&) noexcept {
+  }
+
+  void post_case(const int&) noexcept {
   }
 };
+}  // namespace
 
-TEST_P(MyTest_P, "TEST_P", "", sheila::value<int>({1, 2, 3})) {
+TEST_P(ParameterFixture, "TEST_P", "", sheila::values({1, 2, 3})) {
+}
+
+namespace {
+using MyTypeFixture = sheila::DefaultTypeFixture;
+}
+
+TEST_T(MyTypeFixture, "TEST_T", "", TYPES(int, short, float)) {
 }

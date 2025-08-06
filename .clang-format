@@ -2,3 +2,4 @@ Language: Cpp
 BasedOnStyle: Google
 AllowShortFunctionsOnASingleLine: false
 AccessModifierOffset: -2
+AlignAfterOpenBracket: DontAlign
