@@ -74,4 +74,21 @@ int run_all_test(int argc, char* argv[]) noexcept {
   Factory::instance().run_all(argc, argv);
   return 0;
 }
+
+constexpr const char* ErrorCategory::name() const noexcept {
+  return "sheila::Error";
+}
+
+std::string ErrorCategory::message(int) const {
+  return "";
+}
+
+const std::error_category& error_category() noexcept {
+  static ErrorCategory category;
+  return category;
+}
+
+std::error_code make_error_code(Error error) noexcept {
+  return std::error_code(static_cast<int>(error), error_category());
+}
 }  // namespace sheila
