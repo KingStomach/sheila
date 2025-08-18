@@ -1,5 +1,9 @@
 Language: Cpp
 BasedOnStyle: Google
+
+AllowShortIfStatementsOnASingleLine: false 
+AllowShortBlocksOnASingleLine: false
 AllowShortFunctionsOnASingleLine: false
+
 AccessModifierOffset: -2
 AlignAfterOpenBracket: DontAlign

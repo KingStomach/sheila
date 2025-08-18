@@ -25,12 +25,13 @@ target_sources(
 
 target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/headers)
 
-string(TOUPPER ${PROJECT_NAME} UPPER_PROJECT_NAME)
-target_compile_definitions(${PROJECT_NAME} PRIVATE ${UPPER_PROJECT_NAME}_BUILD)
+target_compile_definitions(${PROJECT_NAME} PRIVATE SHEILA_BUILD)
 
 target_link_libraries(${PROJECT_NAME} PRIVATE msft_proxy4)
 
-if(${PROJECT_NAME} IN_LIST ENABLE_TEST_PROJECTS)
-  target_compile_definitions(${PROJECT_NAME} PRIVATE ${UPPER_PROJECT_NAME}_ENABLE_TEST)
+if(SHEILA_ENABLE_TESTING)
+  option(BUILD_TESTING "Build the testing tree" ON)
+  enable_testing()
+  target_compile_definitions(${PROJECT_NAME} PRIVATE SHEILA_BUILD_ENABLE_TEST)
   add_subdirectory("test")
 endif()
