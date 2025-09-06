@@ -15,8 +15,7 @@
       "cacheVariables": {
         "CXX_COMPILER_OPTIONS": "/W4;/WX;/Zc:preprocessor;",
         "SHEILA_ENABLE_TESTING": "On",
-        "CMAKE_RUNTIME_OUTPUT_DIRECTORY": "${sourceDir}/out",
-        "CMAKE_MODULE_PATH": "${sourceDir}/cmake"
+        "CMAKE_RUNTIME_OUTPUT_DIRECTORY": "${sourceDir}/out"
       }
     }
   ],

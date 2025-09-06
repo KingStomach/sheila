@@ -2,11 +2,13 @@ cmake_minimum_required(VERSION 3.28)
 
 project(sheila)
 
-add_compile_options(${CXX_COMPILER_OPTIONS})
+list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 
 find_package(proxy REQUIRED)
 
 add_library(${PROJECT_NAME} SHARED)
+
+target_compile_options(${PROJECT_NAME} PUBLIC ${CXX_COMPILER_OPTIONS})
 
 target_compile_features(${PROJECT_NAME} PUBLIC cxx_std_23)
 
@@ -27,11 +29,11 @@ target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/he
 
 target_compile_definitions(${PROJECT_NAME} PRIVATE SHEILA_BUILD)
 
-target_link_libraries(${PROJECT_NAME} PRIVATE msft_proxy4)
+target_link_libraries(${PROJECT_NAME} PRIVATE msft_proxy4_module)
 
 if(SHEILA_ENABLE_TESTING)
   option(BUILD_TESTING "Build the testing tree" ON)
   enable_testing()
-  target_compile_definitions(${PROJECT_NAME} PRIVATE SHEILA_BUILD_ENABLE_TEST)
+  target_compile_definitions(${PROJECT_NAME} PRIVATE SHEILA_ENABLE_TEST)
   add_subdirectory("test")
 endif()
