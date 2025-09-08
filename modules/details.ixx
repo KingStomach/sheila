@@ -112,7 +112,7 @@ void try_format_impl(std::string& result, const T& value, const Args&... args) {
 template <class... Args>
 std::string try_format(const Args&... args) {
   std::string result;
-  try_format_impl(args...);
+  try_format_impl(result, args...);
   return result;
 }
 }  // namespace sheila::details
